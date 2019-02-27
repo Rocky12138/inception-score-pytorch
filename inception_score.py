@@ -68,7 +68,7 @@ def inception_score(imgs, cuda=True, batch_size=32, resize=False, splits=1):
     return np.mean(split_scores), np.std(split_scores)
 
 if __name__ == '__main__':
-    class IgnoreLabelDataset(torch.utils.data.Dataset):
+   class IgnoreLabelDataset(torch.utils.data.Dataset):
         def __init__(self, orig):
             self.orig = orig
 
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     import torchvision.datasets as dset
     import torchvision.transforms as transforms
 
-    cifar = dset.CIFAR10(root='/data/cifar10', download=True,
+    fakeImg = dset.ImageFolder(root='/home/wangli/GAN-Compression/fakeGen',
                              transform=transforms.Compose([
                                  transforms.Resize(32),
                                  transforms.ToTensor(),
@@ -89,7 +89,7 @@ if __name__ == '__main__':
                              ])
     )
 
-    IgnoreLabelDataset(cifar)
+    #IgnoreLabelDataset(cifar)
 
     print ("Calculating Inception Score...")
-    print (inception_score(IgnoreLabelDataset(cifar), cuda=True, batch_size=32, resize=True, splits=10))
+    print (inception_score(fakeImg, cuda=True, batch_size=32, resize=True, splits=10))
