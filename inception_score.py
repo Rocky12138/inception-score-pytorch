@@ -68,6 +68,16 @@ def inception_score(imgs, cuda=True, batch_size=32, resize=False, splits=1):
     return np.mean(split_scores), np.std(split_scores)
 
 if __name__ == '__main__':
+    class IgnoreLabelDataset(torch.utils.data.Dataset):
+        def __init__(self, orig):
+            self.orig = orig
+
+        def __getitem__(self, index):
+            return self.orig[index][0]
+
+        def __len__(self):
+            return len(self.orig)
+
     import torchvision.datasets as dset
     import torchvision.transforms as transforms
 
@@ -80,4 +90,4 @@ if __name__ == '__main__':
     )
 
     print ("Calculating Inception Score...")
-    print (inception_score(fakeImg, cuda=True, batch_size=32, resize=True, splits=10))
+    print (inception_score(IgnoreLabelDataset(fakeImg), cuda=True, batch_size=32, resize=True, splits=10))
