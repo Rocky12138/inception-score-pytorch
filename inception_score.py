@@ -3,11 +3,16 @@ from torch import nn
 from torch.autograd import Variable
 from torch.nn import functional as F
 import torch.utils.data
+import argparse
 
 from torchvision.models.inception import inception_v3
 
 import numpy as np
 from scipy.stats import entropy
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--dataroot', required=True, help='path to dataset')
+
 
 def inception_score(imgs, cuda=True, batch_size=32, resize=False, splits=1):
     """Computes the inception score of the generated images imgs
@@ -81,7 +86,7 @@ if __name__ == '__main__':
     import torchvision.datasets as dset
     import torchvision.transforms as transforms
 
-    fakeImg = dset.ImageFolder(root='/home/wangli/GAN-Compression/fakeGen',
+    fakeImg = dset.ImageFolder(root=opt.dataroot,
                              transform=transforms.Compose([
                                  transforms.Resize(32),
                                  transforms.ToTensor(),
